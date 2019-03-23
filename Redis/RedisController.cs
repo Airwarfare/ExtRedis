@@ -13,13 +13,23 @@ public static class RedisController
         Redis = new RedisClient();
     }
 
-    public static void RedisSet(string value)
+    public static void RedisHMSet(string key, IEnumerable<KeyValuePair<string, string>> map)
     {
-        Redis.Set("mykey", value);
+        Redis.HMSet(key, map);
+    }
+
+    public static void RedisSet(string key, string value)
+    {
+        Redis.Set(key, value);
     }
 
     public static string RedisGet(string key)
     {
         return Redis.Get(key);
+    }
+
+    public static KeyValuePair<string, string>[] RedisHGETALL(string key)
+    {
+        return Redis.HGetAll(key);
     }
 }
