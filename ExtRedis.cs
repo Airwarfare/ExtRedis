@@ -43,7 +43,7 @@ public class ExtRedis
             {
                 if (argCount == 2)
                 {
-                    bool connected = RedisController.RedisConnect(args[0], int.Parse(args[1]));
+                    bool connected = RedisController.RedisConnect(args[0].Trim('"'), int.Parse(args[1]));
                     if(!connected) { output.Append("ERROR: Couldn't connect to the database"); return 1; }
                     output.Append("Connected");
                     return 0;
