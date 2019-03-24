@@ -13,13 +13,23 @@ public class ExtRedis
     }
 
     [DllExport("RVExtension", CallingConvention = CallingConvention.Winapi)]
-    public static void RvExtension(StringBuilder output, int outputSize,
+    public static int RvExtension(StringBuilder output, int outputSize,
         [MarshalAs(UnmanagedType.LPStr)] string function)
     {
         if (function == "Connect")
         {
-            RedisController.RedisConnect();
+            if(RedisController.RedisConnect())
+            {
+                output.Append("Connected");
+                return 0;
+            } else
+            {
+                output.Append("ERROR: Couldn't connect to the database");
+                return 1;
+            }
         }
+
+        return 0;
     }
 
     [DllExport("RVExtensionArgs", CallingConvention = CallingConvention.Winapi)]
@@ -27,6 +37,11 @@ public class ExtRedis
         [MarshalAs(UnmanagedType.LPStr)] string function,
         [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr, SizeParamIndex = 4)] string[] args, int argCount)
     {
+        if(!RedisController.Connected)
+        {
+            output.Append("No Connection to the database");
+            return 0;
+        }
         //output.Append(argCount + " " + args[0] + " ");
         switch (function)
         {      

@@ -7,10 +7,19 @@ using System.Threading.Tasks;
 
 public static class RedisController
 {
+    public static bool Connected = false;
     public static RedisClient Redis { get; set; }
-    public static void RedisConnect()
+    public static bool RedisConnect()
     {
-        Redis = new RedisClient();
+        try
+        {
+            Redis = new RedisClient();
+            Connected = true;
+            return true;
+        } catch(Exception ex)
+        {
+            return false;
+        }
     }
 
     public static void RedisHMSet(string key, IEnumerable<KeyValuePair<string, string>> map)
