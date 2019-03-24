@@ -39,10 +39,28 @@ public class ExtRedis
     {
         if(!RedisController.Connected)
         {
-            output.Append("No Connection to the database");
-            return 0;
+            if (function == "Connect")
+            {
+                if (argCount == 2)
+                {
+                    bool connected = RedisController.RedisConnect(args[0], int.Parse(args[1]));
+                    if(!connected) { output.Append("ERROR: Couldn't connect to the database"); return 1; }
+                    output.Append("Connected");
+                    return 0;
+                } else if (argCount == 3)
+                {
+                    bool connected = RedisController.RedisConnect(args[0], int.Parse(args[1]), args[2]);
+                    if (!connected) { output.Append("ERROR: Couldn't connect to the database"); return 1; }
+                    output.Append("Connected");
+                    return 0;
+                }
+            }
+            else
+            {
+                output.Append("No Connection to the database");
+                return 0;
+            }
         }
-        //output.Append(argCount + " " + args[0] + " ");
         switch (function)
         {      
             case "Set":
@@ -69,8 +87,8 @@ public class ExtRedis
                         return;
                     }
                 });
-                if (error) { return 1; }
-                RedisController.RedisHMSet(key, map);
+                if (error) { return 1; } //Don't set anything if the values are wrong
+                RedisController.RedisHMSet(key, map); //Set the values to the database
                 break;
 
             case "HGetAll":
@@ -94,10 +112,5 @@ public class ExtRedis
                 return 1;
         }
         return 0;
-    }
-
-    public static void Main()
-    {
-        RedisController.RedisConnect();
     }
 }

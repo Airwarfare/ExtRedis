@@ -9,6 +9,41 @@ public static class RedisController
 {
     public static bool Connected = false;
     public static RedisClient Redis { get; set; }
+
+
+    public static bool RedisConnect(string ip, int port, string password)
+    {
+        try
+        {
+            RedisSettings.Builder settings = new RedisSettings.Builder();
+            settings.Auth(password);
+            settings.Port(port);
+            settings.Host(ip);
+
+            Redis = new RedisClient(settings);
+            Connected = true;
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+    }
+
+    public static bool RedisConnect(string ip, int port)
+    {
+        try
+        {
+            Redis = new RedisClient(ip, port);
+            Connected = true;
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+    }
+
     public static bool RedisConnect()
     {
         try
