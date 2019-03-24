@@ -9,7 +9,7 @@ public class ExtRedis
     [DllExport("RVExtensionVersion", CallingConvention = CallingConvention.Winapi)]
     public static void RvExtensionVersion(StringBuilder output, int outputSize)
     {
-        output.Append("Test-Extension v1.0");
+        output.Append("ExtRedis V0.01");
     }
 
     [DllExport("RVExtension", CallingConvention = CallingConvention.Winapi)]
@@ -70,8 +70,25 @@ public class ExtRedis
                     }
                 });
                 if (error) { return 1; }
-                //RedisController.RedisHMSet(args[0].Trim('"'), )
+                RedisController.RedisHMSet(key, map);
                 break;
+
+            case "HGETALL":
+                var hold = RedisController.RedisHGETALL(args[0]);
+                output.Append("[");
+                int i = 0;
+                foreach (var item in hold)
+                {
+                    string comma = "";
+                    if (hold.Length - 1 != i)
+                    {
+                        comma = ",";
+                    }
+                    output.Append("[" + item.Key + ", " + item.Value + "]" + comma);
+                    i++; 
+                }
+                output.Append("]");
+                return 0;
             default:
                 output.Append("Error, That is not a function");
                 return 1;
