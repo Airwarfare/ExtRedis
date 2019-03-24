@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using System.Runtime.InteropServices;
 
 public class ExtRedis
 {
@@ -30,13 +26,40 @@ public class ExtRedis
     public static int RvExtensionArgs(StringBuilder output, int outputSize,
         [MarshalAs(UnmanagedType.LPStr)] string function,
         [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr, SizeParamIndex = 4)] string[] args, int argCount)
-    {        
-        if (function == "Set")
-        {
-            RedisController.RedisSet(args[0].Trim('"'));
-        } else if (function == "Get")
-        {
-            output.Append(RedisController.RedisGet(args[0].Trim('"')));
+    {
+        //output.Append(argCount + " " + args[0] + " ");
+        switch (function)
+        {      
+            case "Set":
+                RedisController.RedisSet(args[0].Trim('"'), args[1].Trim('"'));
+                break;
+            case "Get":
+                output.Append(RedisController.RedisGet(args[0].Trim('"')));
+                break;
+            case "HMSet":
+                string key = args[0]; //Get first param which should be the key
+                args = args.Skip(1).Take(args.Count() - 1).ToArray(); //Skip the key and leave the pairs left
+                IEnumerable<KeyValuePair<string, string>> map = new KeyValuePair<string,string>[0]; //Make the map with 0 because we concat it later
+                bool error = false;
+                args.ToList().ForEach(x =>
+                {
+                    string[] data = SQFUtil.ParamParse(x.Substring(1, x.Length - 1).Substring(0, x.Length - 2)).ToArray(); //Trim the first and last index of the string and give to the help function
+                    if (data.Length == 2)
+                    {
+                        map = map.Concat(new[] { new KeyValuePair<string, string>(data[0], data[1]) });
+                    } else
+                    {
+                        output.Append("ERROR: Key values did not have the amount of 2, got " + data.Length + " instead");
+                        error = true;
+                        return;
+                    }
+                });
+                if (error) { return 1; }
+                //RedisController.RedisHMSet(args[0].Trim('"'), )
+                break;
+            default:
+                output.Append("Error, That is not a function");
+                return 1;
         }
         return 0;
     }
