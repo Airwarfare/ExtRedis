@@ -73,8 +73,8 @@ public class ExtRedis
                 RedisController.RedisHMSet(key, map);
                 break;
 
-            case "HGETALL":
-                var hold = RedisController.RedisHGETALL(args[0]);
+            case "HGetAll":
+                var hold = RedisController.RedisHGetAll(args[0]);
                 output.Append("[");
                 int i = 0;
                 foreach (var item in hold)

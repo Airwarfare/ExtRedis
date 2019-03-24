@@ -37,7 +37,7 @@ public static class RedisController
         return Redis.Get(key);
     }
 
-    public static KeyValuePair<string, string>[] RedisHGETALL(string key)
+    public static KeyValuePair<string, string>[] RedisHGetAll(string key)
     {
         return Redis.HGetAll(key);
     }
