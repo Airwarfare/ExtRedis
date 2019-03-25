@@ -1,4 +1,4 @@
-﻿using Sider;
+﻿using CSRedis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +15,8 @@ public static class RedisController
     {
         try
         {
-            RedisSettings.Builder settings = new RedisSettings.Builder();
-            settings.Auth(password);
-            settings.Port(port);
-            settings.Host(ip);
-
-            Redis = new RedisClient(settings);
+            Redis = new RedisClient(ip, port);
+            Redis.Auth(password);
             Connected = true;
             return true;
         }
@@ -48,7 +44,7 @@ public static class RedisController
     {
         try
         {
-            Redis = new RedisClient();
+            Redis = new RedisClient("localhost");
             Connected = true;
             return true;
         } catch(Exception ex)
@@ -57,7 +53,7 @@ public static class RedisController
         }
     }
 
-    public static void RedisHMSet(string key, IEnumerable<KeyValuePair<string, string>> map)
+    public static void RedisHMSet(string key, Dictionary<string, string> map)
     {
         Redis.HMSet(key, map);
     }
@@ -72,18 +68,13 @@ public static class RedisController
         return Redis.Get(key);
     }
 
-    public static KeyValuePair<string, string>[] RedisHGetAll(string key)
+    public static Dictionary<string, string> RedisHGetAll(string key)
     {
         return Redis.HGetAll(key);
     }
 
-    public static void RedisScan()
+    public static string[] RedisScan(int cursor = 0, string pattern = null, long? count = null)
     {
-        //Sider doesn't have scan, need to implement myself
-    }
-
-    public static RedisType RedisType(string key)
-    {
-        return Redis.Type(key);
+        return Redis.Scan(cursor, pattern, count).Items;
     }
 }

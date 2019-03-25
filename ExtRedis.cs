@@ -16,19 +16,33 @@ public class ExtRedis
     public static int RvExtension(StringBuilder output, int outputSize,
         [MarshalAs(UnmanagedType.LPStr)] string function)
     {
-        if (function == "Connect")
+        switch (function)
         {
-            if(RedisController.RedisConnect())
-            {
-                output.Append("Connected");
-                return 0;
-            } else
-            {
-                output.Append("ERROR: Couldn't connect to the database");
-                return 1;
-            }
+            case "Connect":
+                if (RedisController.RedisConnect())
+                {
+                    output.Append("Connected");
+                    return 0;
+                }
+                else
+                {
+                    output.Append("ERROR: Couldn't connect to the database");
+                    return 1;
+                }
+            case "Scan":
+                int i = 0;
+                output.Append("[");
+                var scan = RedisController.RedisScan().ToList();
+                foreach (var item in scan)
+                { 
+                    string comma = "";
+                    if (i != scan.Count - 1) { comma = ","; }
+                    output.Append("\"" + item + "\"" + comma);
+                    i++;
+                }
+                output.Append("]");
+                break;
         }
-
         return 0;
     }
 
@@ -45,7 +59,7 @@ public class ExtRedis
                 {
                     bool connected = RedisController.RedisConnect(args[0].Trim('"'), int.Parse(args[1]));
                     if(!connected) { output.Append("ERROR: Couldn't connect to the database"); return 1; }
-                    output.Append("Connected");
+                    output.Append("Connected" + System.Diagnostics.Process.GetCurrentProcess().ProcessName);
                     return 0;
                 } else if (argCount == 3)
                 {
@@ -72,14 +86,14 @@ public class ExtRedis
             case "HMSet":
                 string key = args[0].Trim('"'); //Get first param which should be the key
                 args = args.Skip(1).Take(args.Count() - 1).ToArray(); //Skip the key and leave the pairs left
-                IEnumerable<KeyValuePair<string, string>> map = new KeyValuePair<string,string>[0]; //Make the map with 0 because we concat it later
+                Dictionary<string, string> map = new Dictionary<string, string>(); //Make the map with 0 because we concat it later
                 bool error = false;
                 args.ToList().ForEach(x =>
                 {
                     string[] data = SQFUtil.ParamParse(x.Substring(1, x.Length - 1).Substring(0, x.Length - 2)).ToArray(); //Trim the first and last index of the string and give to the help function
                     if (data.Length == 2)
                     {
-                        map = map.Concat(new[] { new KeyValuePair<string, string>(data[0].Trim('"'), data[1]) });
+                        map.Add(data[0].Trim('"'), data[1]);
                     } else
                     {
                         output.Append("ERROR: Key values did not have the amount of 2, got " + data.Length + " instead");
@@ -98,7 +112,7 @@ public class ExtRedis
                 foreach (var item in hold)
                 {
                     string comma = "";
-                    if (hold.Length - 1 != i)
+                    if (hold.Count - 1 != i)
                     {
                         comma = ",";
                     }
@@ -107,6 +121,9 @@ public class ExtRedis
                 }
                 output.Append("]");
                 return 0;
+            case "Scan":
+                output.Append(RedisController.RedisScan(int.Parse(args[0].Trim('"')), args[1].Trim('"')));
+                break;
             default:
                 output.Append("Error, That is not a function");
                 return 1;
