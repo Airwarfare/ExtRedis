@@ -76,4 +76,14 @@ public static class RedisController
     {
         return Redis.HGetAll(key);
     }
+
+    public static void RedisScan()
+    {
+        //Sider doesn't have scan, need to implement myself
+    }
+
+    public static RedisType RedisType(string key)
+    {
+        return Redis.Type(key);
+    }
 }
