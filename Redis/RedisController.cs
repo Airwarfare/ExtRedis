@@ -10,7 +10,7 @@ public static class RedisController
     public static bool Connected = false;
     public static RedisClient Redis { get; set; }
 
-
+    #region Connection
     public static bool RedisConnect(string ip, int port, string password)
     {
         try
@@ -52,6 +52,7 @@ public static class RedisController
             return false;
         }
     }
+    #endregion
 
     public static void RedisHMSet(string key, Dictionary<string, string> map)
     {
@@ -76,5 +77,10 @@ public static class RedisController
     public static string[] RedisScan(int cursor = 0, string pattern = null, long? count = null)
     {
         return Redis.Scan(cursor, pattern, count).Items;
+    }
+
+    public static Tuple<string,string>[] RedisHScan(string key, int cursor, string pattern = null, long? count = null)
+    {
+        return Redis.HScan(key, cursor, pattern, count).Items;
     }
 }

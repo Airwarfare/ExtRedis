@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -124,6 +125,22 @@ public class ExtRedis
             case "Scan":
                 output.Append(RedisController.RedisScan(int.Parse(args[0].Trim('"')), args[1].Trim('"')));
                 break;
+            case "HScan":
+                if (argCount < 2) { return 0; } //Min of 2 args
+                Tuple<string, string>[] scan = new Tuple<string, string>[0];
+
+                if(argCount == 2)
+                    scan = RedisController.RedisHScan(args[0].Trim('"'), int.Parse(args[1].Trim('"')));
+                else if(argCount == 3)
+                    scan = RedisController.RedisHScan(args[0].Trim('"'), int.Parse(args[1].Trim('"')), args[2].Trim('"'));
+                else if(argCount == 4)
+                    scan = RedisController.RedisHScan(args[0].Trim('"'), int.Parse(args[1].Trim('"')), args[2].Trim('"'), int.Parse(args[3]));
+
+                foreach (var item in scan)
+                {
+                    output.Append("\n" + item.Item1 + " | " + item.Item2);
+                }
+                return 0;
             default:
                 output.Append("Error, That is not a function");
                 return 1;
