@@ -70,7 +70,7 @@ public class ExtRedis
                 output.Append(RedisController.RedisGet(args[0].Trim('"')));
                 break;
             case "HMSet":
-                string key = args[0]; //Get first param which should be the key
+                string key = args[0].Trim('"'); //Get first param which should be the key
                 args = args.Skip(1).Take(args.Count() - 1).ToArray(); //Skip the key and leave the pairs left
                 IEnumerable<KeyValuePair<string, string>> map = new KeyValuePair<string,string>[0]; //Make the map with 0 because we concat it later
                 bool error = false;
@@ -79,7 +79,7 @@ public class ExtRedis
                     string[] data = SQFUtil.ParamParse(x.Substring(1, x.Length - 1).Substring(0, x.Length - 2)).ToArray(); //Trim the first and last index of the string and give to the help function
                     if (data.Length == 2)
                     {
-                        map = map.Concat(new[] { new KeyValuePair<string, string>(data[0], data[1]) });
+                        map = map.Concat(new[] { new KeyValuePair<string, string>(data[0].Trim('"'), data[1]) });
                     } else
                     {
                         output.Append("ERROR: Key values did not have the amount of 2, got " + data.Length + " instead");
@@ -92,7 +92,7 @@ public class ExtRedis
                 break;
 
             case "HGetAll":
-                var hold = RedisController.RedisHGetAll(args[0]);
+                var hold = RedisController.RedisHGetAll(args[0].Trim('"'));
                 output.Append("[");
                 int i = 0;
                 foreach (var item in hold)
@@ -102,7 +102,7 @@ public class ExtRedis
                     {
                         comma = ",";
                     }
-                    output.Append("[" + item.Key + ", " + item.Value + "]" + comma);
+                    output.Append("[\"" + item.Key + "\", " + item.Value + "]" + comma);
                     i++; 
                 }
                 output.Append("]");
