@@ -358,6 +358,71 @@ public static class RedisController
         return Redis.SPop(key);
     }
 
+    //Setter
+    public static void RedisZAdd(string key, params string[] values)
+    {
+        Redis.ZAdd(key, values);
+    }
+
+    //Getter
+    public static long RedisZCard(string key)
+    {
+        return Redis.ZCard(key);
+    }
+
+    //Getter
+    public static long RedisZCount(string key, string min, string max)
+    {
+        return Redis.ZCount(key, min, max);
+    }
+
+    //Setter
+    public static void RedisZIncrBy(string key, int amount, string member)
+    {
+        Redis.ZIncrBy(key, amount, member);
+    }
+
+    //Getter
+    public static string[] RedisZRange(string key, long start, long stop, bool withScores = false)
+    {
+        return Redis.ZRange(key, start, stop, withScores);
+    }
+
+    //Getter
+    public static long? RedisZRank(string key, string member)
+    {
+        return Redis.ZRank(key, member);
+    }
+
+    //Setter
+    public static void RedisZRem(string key, params object[] members)
+    {
+        Redis.ZRem(key, members);
+    }
+
+    //Setter
+    public static void RedisZRemRangeByRank(string key, long start, long stop)
+    {
+        Redis.ZRemRangeByRank(key, start, stop);
+    }
+
+    //Setter
+    public static void RedisZRemRangeByScore(string key, double min, double max, bool exclusiveMin = false, bool exclusiveMax = false)
+    {
+        Redis.ZRemRangeByScore(key, min, max, exclusiveMin, exclusiveMax);
+    }
+
+    //Getter
+    public static double? RedisZScore(string key, string member)
+    {
+        return Redis.ZScore(key, member);
+    }
+
+    //Getter
+    public static string[] RedisZRangeByScore(string key, double min, double max, bool exclusiveMin = false, bool exclusiveMax = false, bool withScores = false, long? offset = null, long? count = null)
+    {
+        return Redis.ZRangeByScore(key, min, max, withScores, exclusiveMin, exclusiveMax, offset, count);
+    }
 
     //!IMPORTANT, PUB/SUB, NEED TO INJECT SQF FOR THIS FEATURE
 }
