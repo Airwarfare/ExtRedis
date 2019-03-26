@@ -80,14 +80,65 @@ public class ExtRedis
                 return 0;
             }
         }
+        args = args.Select(x => x.Trim('"')).ToArray();
         switch (function)
-        {      
+        {
+            #region Strings
             case "Set":
-                RedisController.RedisSet(args[0].Trim('"'), args[1].Trim('"'));
+                Strings.Set(args);
                 break;
             case "Get":
-                output.Append(RedisController.RedisGet(args[0].Trim('"')));
+                output.Append(Strings.Get(args));
                 break;
+            case "Append":
+                Strings.Append(args);
+                break;
+            case "BitCount":
+                Strings.BitCount(args);
+                break;
+            case "SetNx":
+                Strings.SetNx(args);
+                break;
+            case "SetRange":
+                Strings.SetRange(args);
+                break;
+            case "StrLen":
+                Strings.StrLen(args);
+                break;
+            case "MSet":
+                Strings.MSet(args);
+                break;
+            case "MSetNx":
+                Strings.MSetNx(args);
+                break;
+            case "GetRange":
+                Strings.GetRange(args);
+                break;
+            case "Incr":
+                Strings.Incr(args);
+                break;
+            case "IncrBy":
+                Strings.IncrBy(args);
+                break;
+            case "IncrByFloat":
+                Strings.IncrByFloat(args);
+                break;
+            case "Decr":
+                Strings.Decr(args);
+                break;
+            case "DecrBy":
+                Strings.DecrBy(args);
+                break;
+            case "Del":
+                Strings.Del(args);
+                break; 
+            case "Expire":
+                Strings.Expire(args);
+                break;
+            case "Ttl":
+                Strings.Ttl(args);
+                break;
+            #endregion
             case "HMSet":
                 string key = args[0].Trim('"'); //Get first param which should be the key
                 args = args.Skip(1).Take(args.Count() - 1).ToArray(); //Skip the key and leave the pairs left

@@ -72,12 +72,6 @@ public static class RedisController
     }
 
     //Setter
-    public static void RedisBitCount(string key, long? start = null, long? end = null)
-    {
-        Redis.BitCount(key, start, end);
-    }
-
-    //Setter
     public static void RedisSetNx(string key, object value)
     {
         Redis.SetNx(key, value);
@@ -441,6 +435,12 @@ public static class RedisController
     public static long RedisPfCount(params string[] keys)
     {
         return Redis.PfCount(keys);
+    }
+
+    //Getter
+    public static long RedisBitCount(string key, long? start = null, long? end = null)
+    {
+        return Redis.BitCount(key, start, end);
     }
     #endregion
 
