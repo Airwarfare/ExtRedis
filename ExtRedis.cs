@@ -6,6 +6,7 @@ using System.Text;
 
 public class ExtRedis
 {
+    public const string Version = "V0.0.01";
 
     [DllExport("RVExtensionVersion", CallingConvention = CallingConvention.Winapi)]
     public static void RvExtensionVersion(StringBuilder output, int outputSize)
@@ -43,6 +44,9 @@ public class ExtRedis
                 }
                 output.Append("]");
                 break;
+            case "Version":
+                output.Append(Version);
+                break;
         }
         return 0;
     }
@@ -60,7 +64,7 @@ public class ExtRedis
                 {
                     bool connected = RedisController.RedisConnect(args[0].Trim('"'), int.Parse(args[1]));
                     if(!connected) { output.Append("ERROR: Couldn't connect to the database"); return 1; }
-                    output.Append("Connected" + System.Diagnostics.Process.GetCurrentProcess().ProcessName);
+                    output.Append("Connected");
                     return 0;
                 } else if (argCount == 3)
                 {
@@ -135,11 +139,16 @@ public class ExtRedis
                     scan = RedisController.RedisHScan(args[0].Trim('"'), int.Parse(args[1].Trim('"')), args[2].Trim('"'));
                 else if(argCount == 4)
                     scan = RedisController.RedisHScan(args[0].Trim('"'), int.Parse(args[1].Trim('"')), args[2].Trim('"'), int.Parse(args[3]));
-
+                output.Append("[");
+                int j = 0;
                 foreach (var item in scan)
                 {
-                    output.Append("\n" + item.Item1 + " | " + item.Item2);
+                    string comma = "";
+                    if (j != scan.Length - 1) { comma = ","; }
+                    output.Append("[\"" + item.Item1 + "\",\"" + item.Item2 + "\"]" + comma);
+                    j++;
                 }
+                output.Append("]");
                 return 0;
             default:
                 output.Append("Error, That is not a function");
