@@ -184,6 +184,94 @@ public static class RedisController
     {
         Redis.BRPop(timeout, keys);
     }
+
+    //Setter
+    public static void RedisSAdd(string key, params object[] values)
+    {
+        Redis.SAdd(key, values);
+    }
+
+
+    //Setter
+    public static void RedisSRem(string key, params object[] values)
+    {
+        Redis.SRem(key, values);
+    }
+
+    //Setter
+    public static void RedisSUnion(params string[] keys)
+    {
+        Redis.SUnion(keys);
+    }
+    //Setter
+    public static void RedisSInter(params string[] keys)
+    {
+        Redis.SInter(keys);
+    }
+    //Setter
+    public static void RedisSMove(string source, string destination, object member)
+    {
+        Redis.SMove(source, destination, member);
+    }
+    //Setter
+    public static void RedisZAdd(string key, params string[] values)
+    {
+        Redis.ZAdd(key, values);
+    }
+
+    //Setter
+    public static void RedisZRem(string key, params object[] members)
+    {
+        Redis.ZRem(key, members);
+    }
+
+    //Setter
+    public static void RedisZRemRangeByRank(string key, long start, long stop)
+    {
+        Redis.ZRemRangeByRank(key, start, stop);
+    }
+
+    //Setter
+    public static void RedisZRemRangeByScore(string key, double min, double max, bool exclusiveMin = false, bool exclusiveMax = false)
+    {
+        Redis.ZRemRangeByScore(key, min, max, exclusiveMin, exclusiveMax);
+    }
+
+    //Setter
+    public static void RedisZIncrBy(string key, int amount, string member)
+    {
+        Redis.ZIncrBy(key, amount, member);
+    }
+
+    //Setter
+    public static void RedisHSetNx(string key, string field, object value)
+    {
+        Redis.HSetNx(key, field, value);
+    }
+
+    //Setter
+    public static void RedisHSet(string key, string field, object value)
+    {
+        Redis.HSet(key, field, value);
+    }
+
+    //Setter
+    public static void RedisHIncrBy(string key, string field, long amount)
+    {
+        Redis.HIncrBy(key, field, amount);
+    }
+
+    //Setter
+    public static void RedisPfAdd(string key, params object[] objects)
+    {
+        Redis.PfAdd(key, objects);
+    }
+
+    //Setter
+    public static void RedisPfMerge(string destKey, params string[] keys)
+    {
+        Redis.PfMerge(destKey, keys);
+    }
     #endregion
 
     #region Getters
@@ -258,6 +346,102 @@ public static class RedisController
     {
         return Redis.LLen(key);
     }
+
+    //Getter
+    public static long RedisSCard(string key)
+    {
+        return Redis.SCard(key);
+    }
+
+    //Getter
+    public static bool RedisSIsMember(string key, object value)
+    {
+        return Redis.SIsMember(key, value);
+    }
+
+    //Getter
+    public static string[] RedisSMembers(string key)
+    {
+        return Redis.SMembers(key);
+    }
+
+    //Getter
+    public static string RedisSPop(string key)
+    {
+        return Redis.SPop(key);
+    }
+
+    //Getter
+    public static long RedisZCard(string key)
+    {
+        return Redis.ZCard(key);
+    }
+
+    //Getter
+    public static long RedisZCount(string key, string min, string max)
+    {
+        return Redis.ZCount(key, min, max);
+    }
+
+    //Getter
+    public static string[] RedisZRange(string key, long start, long stop, bool withScores = false)
+    {
+        return Redis.ZRange(key, start, stop, withScores);
+    }
+
+    //Getter
+    public static long? RedisZRank(string key, string member)
+    {
+        return Redis.ZRank(key, member);
+    }
+
+    //Getter
+    public static double? RedisZScore(string key, string member)
+    {
+        return Redis.ZScore(key, member);
+    }
+
+    //Getter
+    public static string[] RedisZRangeByScore(string key, double min, double max, bool exclusiveMin = false, bool exclusiveMax = false, bool withScores = false, long? offset = null, long? count = null)
+    {
+        return Redis.ZRangeByScore(key, min, max, withScores, exclusiveMin, exclusiveMax, offset, count);
+    }
+
+    //Getter
+    public static string RedisHGet(string key, string field)
+    {
+        return Redis.HGet(key, field);
+    }
+
+    //Getter
+    public static bool RedisHExists(string key, string field)
+    {
+        return Redis.HExists(key, field);
+    }
+
+    //Getter
+    public static string[] RedisHKeys(string key)
+    {
+        return Redis.HKeys(key);
+    }
+
+    //Getter
+    public static long RedisHLen(string key)
+    {
+        return Redis.HLen(key);
+    }
+
+    //Getter
+    public static string[] RedisHVals(string key)
+    {
+        return Redis.HVals(key);
+    }
+
+    //Getter
+    public static long RedisPfCount(params string[] keys)
+    {
+        return Redis.PfCount(keys);
+    }
     #endregion
 
     #region Delete
@@ -274,6 +458,11 @@ public static class RedisController
         RedisDel(keys);
     }
 
+    //Delete
+    public static void RedisHDel(string key, params string[] fields)
+    {
+        Redis.HDel(key, fields);
+    }
     #endregion
 
     public static string RedisSelect(int index)
@@ -303,126 +492,6 @@ public static class RedisController
 
     #endregion
 
-    //Setter
-    public static void RedisSAdd(string key, params object[] values)
-    {
-        Redis.SAdd(key, values);
-    }
-
-    //Getter
-    public static long RedisSCard(string key)
-    {
-        return Redis.SCard(key);
-    }
-
-    //Setter
-    public static void RedisSRem(string key, params object[] values)
-    {
-        Redis.SRem(key, values);
-    }
-
-
-    //Getter
-    public static bool RedisSIsMember(string key, object value)
-    {
-        return Redis.SIsMember(key, value);
-    }
-
-    //Getter
-    public static string[] RedisSMembers(string key)
-    {
-        return Redis.SMembers(key);
-    }
-
-    //Setter
-    public static void RedisSUnion(params string[] keys)
-    {
-        Redis.SUnion(keys);
-    }
-
-    //Setter
-    public static void RedisSInter(params string[] keys)
-    {
-        Redis.SInter(keys);
-    }
-
-    //Setter
-    public static void RedisSMove(string source, string destination, object member)
-    {
-        Redis.SMove(source, destination, member);
-    }
-
-    //Getter
-    public static string RedisSPop(string key)
-    {
-        return Redis.SPop(key);
-    }
-
-    //Setter
-    public static void RedisZAdd(string key, params string[] values)
-    {
-        Redis.ZAdd(key, values);
-    }
-
-    //Getter
-    public static long RedisZCard(string key)
-    {
-        return Redis.ZCard(key);
-    }
-
-    //Getter
-    public static long RedisZCount(string key, string min, string max)
-    {
-        return Redis.ZCount(key, min, max);
-    }
-
-    //Setter
-    public static void RedisZIncrBy(string key, int amount, string member)
-    {
-        Redis.ZIncrBy(key, amount, member);
-    }
-
-    //Getter
-    public static string[] RedisZRange(string key, long start, long stop, bool withScores = false)
-    {
-        return Redis.ZRange(key, start, stop, withScores);
-    }
-
-    //Getter
-    public static long? RedisZRank(string key, string member)
-    {
-        return Redis.ZRank(key, member);
-    }
-
-    //Setter
-    public static void RedisZRem(string key, params object[] members)
-    {
-        Redis.ZRem(key, members);
-    }
-
-    //Setter
-    public static void RedisZRemRangeByRank(string key, long start, long stop)
-    {
-        Redis.ZRemRangeByRank(key, start, stop);
-    }
-
-    //Setter
-    public static void RedisZRemRangeByScore(string key, double min, double max, bool exclusiveMin = false, bool exclusiveMax = false)
-    {
-        Redis.ZRemRangeByScore(key, min, max, exclusiveMin, exclusiveMax);
-    }
-
-    //Getter
-    public static double? RedisZScore(string key, string member)
-    {
-        return Redis.ZScore(key, member);
-    }
-
-    //Getter
-    public static string[] RedisZRangeByScore(string key, double min, double max, bool exclusiveMin = false, bool exclusiveMax = false, bool withScores = false, long? offset = null, long? count = null)
-    {
-        return Redis.ZRangeByScore(key, min, max, withScores, exclusiveMin, exclusiveMax, offset, count);
-    }
 
     //!IMPORTANT, PUB/SUB, NEED TO INJECT SQF FOR THIS FEATURE
 }
