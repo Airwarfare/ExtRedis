@@ -60,7 +60,7 @@ public static class RedisController
         Redis.HMSet(key, map);
     }
 
-    public static void RedisSet(string key, string value)
+    public static void RedisSet(string key, object value)
     {
         Redis.Set(key, value);
     }
@@ -113,4 +113,117 @@ public static class RedisController
     }
 
     #endregion
+
+    public static string RedisSelect(int index)
+    {
+        return Redis.Select(index);
+    }
+
+    //Setter
+    public static void RedisAppend(string key, object value)
+    {
+        Redis.Append(key, value);
+    }
+
+    //Setter
+    public static void RedisBitCount(string key, long? start = null, long? end = null)
+    {
+        Redis.BitCount(key, start, end);
+    }
+
+    //Setter
+    public static void RedisSetNx(string key, object value)
+    {
+        Redis.SetNx(key, value);
+    }
+
+    //Setter
+    public static void RedisSetRange(string key, uint offset, object value)
+    {
+        Redis.SetRange(key, offset, value);
+    }
+
+    //Getter
+    public static long RedisStrLen(string key)
+    {
+        return Redis.StrLen(key);
+    }
+
+    //Setter
+    public static void RedisMSet(params string[] keyValues)
+    {
+        Redis.MSet(keyValues);
+    }
+
+    //Setter
+    public static void RedisMSetNx(params string[] keyValues)
+    {
+        Redis.MSetNx(keyValues);
+    }
+
+    //Getter
+    public static string RedisGetRange(string key, long start, long end)
+    {
+        return Redis.GetRange(key, start, end);
+    }
+
+    //Getter
+    public static string[] RedisMGet(params string[] keyValues)
+    {
+        return Redis.MGet(keyValues);
+    }
+
+    //Setter
+    public static void RedisIncr(string key)
+    {
+        Redis.Incr(key);
+    }
+
+    //Setter
+    public static void RedisIncrBy(string key, long amount)
+    {
+        Redis.IncrBy(key, amount);
+    }
+
+    //Setter
+    public static void RedisIncrByFloat(string key, double amount)
+    {
+        Redis.IncrByFloat(key, amount);
+    }
+
+    //Setter
+    public static void RedisDecr(string key)
+    {
+        Redis.Decr(key);
+    }
+
+    //Setter
+    public static void RedisDecrBy(string key, long amount)
+    {
+        Redis.DecrBy(key, amount);
+    }
+
+    //Setter
+    public static void RedisExpire(string key, int time)
+    {
+        Redis.Expire(key, time);
+    }
+
+    //Getter
+    public static long RedisTtl(string key)
+    {
+        return Redis.Ttl(key);
+    }
+
+    //Setter
+    public static void RedisRPush(string key, params object[] values)
+    {
+        Redis.RPush(key, values);
+    }
+
+    //Setter
+    public static void RedisRPushX(string key, params object[] values)
+    {
+        Redis.RPushX(key, values);
+    }
 }
