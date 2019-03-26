@@ -64,60 +64,6 @@ public static class RedisController
     {
         Redis.Set(key, value);
     }
-    #endregion
-
-    #region Getters
-    public static string RedisGet(string key)
-    {
-        return Redis.Get(key);
-    }
-
-    public static Dictionary<string, string> RedisHGetAll(string key)
-    {
-        return Redis.HGetAll(key);
-    }
-
-    public static string[] RedisScan(int cursor = 0, string pattern = null, long? count = null)
-    {
-        return Redis.Scan(cursor, pattern, count).Items;
-    }
-
-    public static Tuple<string,string>[] RedisHScan(string key, int cursor, string pattern = null, long? count = null)
-    {
-        return Redis.HScan(key, cursor, pattern, count).Items;
-    }
-
-    public static string[] RedisSScan(string key, int cursor, string pattern = null, long? count = null)
-    {
-        return Redis.SScan(key, cursor, pattern, count).Items;
-    }
-
-    public static Tuple<string, double>[] RedisZScan(string key, int cursor, string pattern = null, long? count = null)
-    {
-        return Redis.ZScan(key, cursor, pattern, count).Items;
-    }
-    #endregion
-
-    #region Delete
-    public static void RedisDel(params string[] keys)
-    {
-        Redis.Del(keys);
-    }
-
-    //Redis doesn't have a DELETE WHERE clause, next best thing
-    //Don't use KEYS for this, redis is single threaded and will prevent other clients from getting their requests fullfilled
-    public static void RedisDelByPattern(string pattern)
-    {
-        string[] keys = RedisScan(0, pattern);
-        RedisDel(keys);
-    }
-
-    #endregion
-
-    public static string RedisSelect(int index)
-    {
-        return Redis.Select(index);
-    }
 
     //Setter
     public static void RedisAppend(string key, object value)
@@ -143,12 +89,6 @@ public static class RedisController
         Redis.SetRange(key, offset, value);
     }
 
-    //Getter
-    public static long RedisStrLen(string key)
-    {
-        return Redis.StrLen(key);
-    }
-
     //Setter
     public static void RedisMSet(params string[] keyValues)
     {
@@ -159,18 +99,6 @@ public static class RedisController
     public static void RedisMSetNx(params string[] keyValues)
     {
         Redis.MSetNx(keyValues);
-    }
-
-    //Getter
-    public static string RedisGetRange(string key, long start, long end)
-    {
-        return Redis.GetRange(key, start, end);
-    }
-
-    //Getter
-    public static string[] RedisMGet(params string[] keyValues)
-    {
-        return Redis.MGet(keyValues);
     }
 
     //Setter
@@ -209,12 +137,6 @@ public static class RedisController
         Redis.Expire(key, time);
     }
 
-    //Getter
-    public static long RedisTtl(string key)
-    {
-        return Redis.Ttl(key);
-    }
-
     //Setter
     public static void RedisRPush(string key, params object[] values)
     {
@@ -225,5 +147,155 @@ public static class RedisController
     public static void RedisRPushX(string key, params object[] values)
     {
         Redis.RPushX(key, values);
+    }
+
+    //Setter
+    public static void RedisLPush(string key, params object[] values)
+    {
+        Redis.LPush(key, values);
+    }
+    #endregion
+
+    #region Getters
+    public static string RedisGet(string key)
+    {
+        return Redis.Get(key);
+    }
+
+    public static Dictionary<string, string> RedisHGetAll(string key)
+    {
+        return Redis.HGetAll(key);
+    }
+
+    public static string[] RedisScan(int cursor = 0, string pattern = null, long? count = null)
+    {
+        return Redis.Scan(cursor, pattern, count).Items;
+    }
+
+    public static Tuple<string,string>[] RedisHScan(string key, int cursor, string pattern = null, long? count = null)
+    {
+        return Redis.HScan(key, cursor, pattern, count).Items;
+    }
+
+    public static string[] RedisSScan(string key, int cursor, string pattern = null, long? count = null)
+    {
+        return Redis.SScan(key, cursor, pattern, count).Items;
+    }
+
+    public static Tuple<string, double>[] RedisZScan(string key, int cursor, string pattern = null, long? count = null)
+    {
+        return Redis.ZScan(key, cursor, pattern, count).Items;
+    }
+
+    //Getter
+    public static long RedisStrLen(string key)
+    {
+        return Redis.StrLen(key);
+    }
+
+    //Getter
+    public static string RedisGetRange(string key, long start, long end)
+    {
+        return Redis.GetRange(key, start, end);
+    }
+
+    //Getter
+    public static string[] RedisMGet(params string[] keyValues)
+    {
+        return Redis.MGet(keyValues);
+    }
+
+    //Getter
+    public static long RedisTtl(string key)
+    {
+        return Redis.Ttl(key);
+    }
+
+    //Getter
+    public static string[] RedisLRange(string key, long start, long end)
+    {
+        return Redis.LRange(key, start, end);
+    }
+
+    //Getter
+    public static string RedisLIndex(string key, long index)
+    {
+        return Redis.LIndex(key, index);
+    }
+    #endregion
+
+    #region Delete
+    public static void RedisDel(params string[] keys)
+    {
+        Redis.Del(keys);
+    }
+
+    //Redis doesn't have a DELETE WHERE clause, next best thing
+    //Don't use KEYS for this, redis is single threaded and will prevent other clients from getting their requests fullfilled
+    public static void RedisDelByPattern(string pattern)
+    {
+        string[] keys = RedisScan(0, pattern);
+        RedisDel(keys);
+    }
+
+    #endregion
+
+    public static string RedisSelect(int index)
+    {
+        return Redis.Select(index);
+    }
+
+    //Setter
+    public static void RedisLInsert(string key, RedisInsert insertType, string pivot, object value)
+    {
+        Redis.LInsert(key, insertType, pivot, value);
+    }
+
+    //Getter
+    public static long RedisLLen(string key)
+    {
+        return Redis.LLen(key);
+    }
+
+    //Setter & Getter
+    public static string RedisLPop(string key)
+    {
+        return Redis.LPop(key);
+    }
+
+    //Setter
+    public static void RedisLSet(string key, long index, object value)
+    {
+        Redis.LSet(key, index, value);
+    }
+
+    //Setter
+    public static void RedisLTrim(string key, long start, long stop)
+    {
+        Redis.LTrim(key, start, stop);
+    }
+
+    //Setter & Getter
+    public static string RedisRPop(string key)
+    {
+        return Redis.RPop(key);
+    }
+
+    //Setter & Getter
+    public static string RedisRPopLPush(string source, string destination)
+    {
+        return Redis.RPopLPush(source, destination);
+    }
+
+    //Setter
+    public static void RedisBLPop(int timeout, params string[] keys)
+    {
+        Redis.BLPopWithKey(timeout, keys);
+    }
+
+    //Setter
+    public static void RedisBRPop(int timeout, params string[] keys)
+    {
+        Redis.BRPop(timeout, keys);
     }
 }
