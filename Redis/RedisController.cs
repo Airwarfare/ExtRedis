@@ -154,6 +154,36 @@ public static class RedisController
     {
         Redis.LPush(key, values);
     }
+
+    //Setter
+    public static void RedisLInsert(string key, RedisInsert insertType, string pivot, object value)
+    {
+        Redis.LInsert(key, insertType, pivot, value);
+    }
+
+    //Setter
+    public static void RedisLSet(string key, long index, object value)
+    {
+        Redis.LSet(key, index, value);
+    }
+
+    //Setter
+    public static void RedisLTrim(string key, long start, long stop)
+    {
+        Redis.LTrim(key, start, stop);
+    }
+
+    //Setter
+    public static void RedisBLPop(int timeout, params string[] keys)
+    {
+        Redis.BLPopWithKey(timeout, keys);
+    }
+
+    //Setter
+    public static void RedisBRPop(int timeout, params string[] keys)
+    {
+        Redis.BRPop(timeout, keys);
+    }
     #endregion
 
     #region Getters
@@ -222,6 +252,12 @@ public static class RedisController
     {
         return Redis.LIndex(key, index);
     }
+
+    //Getter
+    public static long RedisLLen(string key)
+    {
+        return Redis.LLen(key);
+    }
     #endregion
 
     #region Delete
@@ -245,34 +281,12 @@ public static class RedisController
         return Redis.Select(index);
     }
 
-    //Setter
-    public static void RedisLInsert(string key, RedisInsert insertType, string pivot, object value)
-    {
-        Redis.LInsert(key, insertType, pivot, value);
-    }
-
-    //Getter
-    public static long RedisLLen(string key)
-    {
-        return Redis.LLen(key);
-    }
+    #region Setters & Getters
 
     //Setter & Getter
     public static string RedisLPop(string key)
     {
         return Redis.LPop(key);
-    }
-
-    //Setter
-    public static void RedisLSet(string key, long index, object value)
-    {
-        Redis.LSet(key, index, value);
-    }
-
-    //Setter
-    public static void RedisLTrim(string key, long start, long stop)
-    {
-        Redis.LTrim(key, start, stop);
     }
 
     //Setter & Getter
@@ -287,15 +301,63 @@ public static class RedisController
         return Redis.RPopLPush(source, destination);
     }
 
+    #endregion
+
     //Setter
-    public static void RedisBLPop(int timeout, params string[] keys)
+    public static void RedisSAdd(string key, params object[] values)
     {
-        Redis.BLPopWithKey(timeout, keys);
+        Redis.SAdd(key, values);
+    }
+
+    //Getter
+    public static long RedisSCard(string key)
+    {
+        return Redis.SCard(key);
     }
 
     //Setter
-    public static void RedisBRPop(int timeout, params string[] keys)
+    public static void RedisSRem(string key, params object[] values)
     {
-        Redis.BRPop(timeout, keys);
+        Redis.SRem(key, values);
     }
+
+
+    //Getter
+    public static bool RedisSIsMember(string key, object value)
+    {
+        return Redis.SIsMember(key, value);
+    }
+
+    //Getter
+    public static string[] RedisSMembers(string key)
+    {
+        return Redis.SMembers(key);
+    }
+
+    //Setter
+    public static void RedisSUnion(params string[] keys)
+    {
+        Redis.SUnion(keys);
+    }
+
+    //Setter
+    public static void RedisSInter(params string[] keys)
+    {
+        Redis.SInter(keys);
+    }
+
+    //Setter
+    public static void RedisSMove(string source, string destination, object member)
+    {
+        Redis.SMove(source, destination, member);
+    }
+
+    //Getter
+    public static string RedisSPop(string key)
+    {
+        return Redis.SPop(key);
+    }
+
+
+    //!IMPORTANT, PUB/SUB, NEED TO INJECT SQF FOR THIS FEATURE
 }
