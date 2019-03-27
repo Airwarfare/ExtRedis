@@ -40,7 +40,9 @@ public static class SQFUtil
     {
         Dictionary<string, string> output = new Dictionary<string, string>();
         for (int i = 0; i < input.Count; i += 2)
+        {
             output.Add(input[i].Trim('"'), input[i + 1]);
+        }
         return output;
     }
 
@@ -67,7 +69,7 @@ public static class SQFUtil
         {
             string comma = "";
             if (i != args.Count - 1) { comma = ","; }
-            output += "[\"" + item.Key + "\", \"" + item.Value + "\"]" + comma;
+            output += "[\"" + item.Key + "\", " + item.Value + "]" + comma;
             i++;
         }
         output += "]";
