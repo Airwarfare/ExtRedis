@@ -74,4 +74,51 @@ public static class Hashes
         output.Append("]");
         return output;
     }
+
+    public static string HGet(string[] args)
+    {
+        return RedisController.RedisHGet(args[0], args[1]);
+    }
+
+    public static void HSet(string[] args)
+    {
+        RedisController.RedisHSet(args[0], args[1], args[2]);
+    }
+
+    public static void HSetNx(string[] args)
+    {
+        RedisController.RedisHSetNx(args[0], args[1], args[2]);
+    }
+
+    public static void HIncrBy(string[] args)
+    {
+        RedisController.RedisHIncrBy(args[0], args[1], long.Parse(args[2]));
+    }
+
+    public static void HDel(string[] args)
+    {
+        RedisController.RedisHDel(args[0], SQFUtil.ParamParse(args[1]).ToArray());
+    }
+
+    public static bool HExists(string[] args)
+    {
+        return RedisController.RedisHExists(args[0], args[1]);
+    }
+
+    public static string[] HKeys(string[] args)
+    {
+        //This probably doesn't work, remind myself to update this later, string[] -> string (SQF Compatiable)
+        return RedisController.RedisHKeys(args[0]);
+    }
+
+    public static long HLen(string[] args)
+    {
+        return RedisController.RedisHLen(args[0]);
+    }
+
+    public static string[] HVals(string[] args)
+    {
+        //This probably doesn't work, remind myself to update this later, string[] -> string (SQF Compatiable)
+        return RedisController.RedisHVals(args[0]);
+    }
 }
