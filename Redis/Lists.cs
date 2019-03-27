@@ -21,10 +21,9 @@ public static class Lists
         RedisController.RedisLPush(args[0], SQFUtil.ParamParse(args[1]));
     }
 
-    public static string[] LRange(string[] args)
+    public static string LRange(string[] args)
     {
-        //This probably doesn't work, remind myself to update this later, string[] -> string (SQF Compatiable)
-        return RedisController.RedisLRange(args[0], long.Parse(args[1]), long.Parse(args[2]));
+        return SQFUtil.SQFConvert(RedisController.RedisLRange(args[0], long.Parse(args[1]), long.Parse(args[2])));
     }
 
     public static string LIndex(string[] args)

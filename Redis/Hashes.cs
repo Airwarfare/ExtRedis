@@ -15,17 +15,9 @@ public static class Hashes
         string errorMessage = "";
         args.ToList().ForEach(x =>
         {
-            string[] data = SQFUtil.ParamParse(x).ToArray(); //Trim the first and last index of the string and give to the help function
-            if (data.Length == 2)
-            {
-                map.Add(data[0].Trim('"'), data[1]);
-            }
-            else
-            {
-                errorMessage = "ERROR: Key values did not have the amount of 2, got " + data.Length + " instead";
-                error = true;
-                return;
-            }
+            List<string> input = SQFUtil.ParamParse(x);
+            if (input.Count % 2 != 0) { errorMessage = "ERROR: Not even number of parameters"; error = true; return; };
+            SQFUtil.ParamParse(input).ToList().ForEach(y => map.Add(y.Key, y.Value));
         });
         if (error) { return errorMessage; } //Don't set anything if the values are wrong
         RedisController.RedisHMSet(key, map); //Set the values to the database
@@ -34,45 +26,20 @@ public static class Hashes
 
     public static string HGetAll(string[] args)
     {
-        var hold = RedisController.RedisHGetAll(args[0].Trim('"'));
-        string output = "[";
-        int i = 0;
-        foreach (var item in hold)
-        {
-            string comma = "";
-            if (hold.Count - 1 != i)
-            {
-                comma = ",";
-            }
-            output += "[\"" + item.Key + "\", " + item.Value + "]" + comma;
-            i++;
-        }
-        output += "]";
-        return output;
+        return SQFUtil.SQFConvert(RedisController.RedisHGetAll(args[0].Trim('"')));
     }
 
     public static object HScan(string[] args)
     {
         if (args.Length < 2) { return 0; } //Min of 2 args
-        Tuple<string, string>[] scan = new Tuple<string, string>[0];
-        StringBuilder output = new StringBuilder();
-        if (args.Length == 2)
-            scan = RedisController.RedisHScan(args[0].Trim('"'), int.Parse(args[1].Trim('"')));
+        Tuple<string, string>[] scan = null;
+        if (args.Length == 4)
+            scan = RedisController.RedisHScan(args[0].Trim('"'), int.Parse(args[1].Trim('"')), args[2].Trim('"'), int.Parse(args[3]));
         else if (args.Length == 3)
             scan = RedisController.RedisHScan(args[0].Trim('"'), int.Parse(args[1].Trim('"')), args[2].Trim('"'));
-        else if (args.Length == 4)
-            scan = RedisController.RedisHScan(args[0].Trim('"'), int.Parse(args[1].Trim('"')), args[2].Trim('"'), int.Parse(args[3]));
-        output.Append("[");
-        int j = 0;
-        foreach (var item in scan)
-        {
-            string comma = "";
-            if (j != scan.Length - 1) { comma = ","; }
-            output.Append("[\"" + item.Item1 + "\"," + item.Item2 + "]" + comma);
-            j++;
-        }
-        output.Append("]");
-        return output;
+        else
+            scan = RedisController.RedisHScan(args[0].Trim('"'), int.Parse(args[1].Trim('"')));
+        return SQFUtil.SQFConvert(scan.ToDictionary(x => x.Item1, x => x.Item2));
     }
 
     public static string HGet(string[] args)
@@ -105,10 +72,9 @@ public static class Hashes
         return RedisController.RedisHExists(args[0], args[1]);
     }
 
-    public static string[] HKeys(string[] args)
+    public static string HKeys(string[] args)
     {
-        //This probably doesn't work, remind myself to update this later, string[] -> string (SQF Compatiable)
-        return RedisController.RedisHKeys(args[0]);
+        return SQFUtil.SQFConvert(RedisController.RedisHKeys(args[0]));
     }
 
     public static long HLen(string[] args)
@@ -116,9 +82,8 @@ public static class Hashes
         return RedisController.RedisHLen(args[0]);
     }
 
-    public static string[] HVals(string[] args)
+    public static string HVals(string[] args)
     {
-        //This probably doesn't work, remind myself to update this later, string[] -> string (SQF Compatiable)
-        return RedisController.RedisHVals(args[0]);
+        return SQFUtil.SQFConvert(RedisController.RedisHVals(args[0]));
     }
 }

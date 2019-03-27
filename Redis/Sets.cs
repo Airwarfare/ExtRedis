@@ -26,10 +26,9 @@ public static class Sets
         return RedisController.RedisSIsMember(args[0], args[1]);
     }
 
-    public static string[] SMembers(string[] args)
+    public static string SMembers(string[] args)
     {
-        //This probably doesn't work, remind myself to update this later, string[] -> string (SQF Compatiable)
-        return RedisController.RedisSMembers(args[0]);
+        return SQFUtil.SQFConvert(RedisController.RedisSMembers(args[0]));
     }
 
     public static void SUnion(string[] args)

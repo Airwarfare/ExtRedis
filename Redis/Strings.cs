@@ -48,13 +48,11 @@ public static class Strings
 
     public static void MSet(string[] args)
     {
-        //Disabled, need to right helper function to break the string up into an keypair
         RedisController.RedisMSet(SQFUtil.ParamParse(args[0]).ToArray());
     }
 
     public static void MSetNx(string[] args)
     {
-        //Disabled, need to right helper function to break the string up into an keypair
         RedisController.RedisMSetNx(SQFUtil.ParamParse(args[0]).ToArray());
     }
 
@@ -65,18 +63,7 @@ public static class Strings
 
     public static string MGet(string[] args)
     {
-        string[] returnValue = RedisController.RedisMGet(args);
-        string returnstring = "[";
-        int i = 0;
-        foreach (var item in returnValue)
-        {
-            string commma = "";
-            if (i != returnValue.Length - 1) { commma = ","; }
-            returnstring += item + commma;
-            i++;
-        }
-        returnstring += "]";
-        return returnstring;
+        return SQFUtil.SQFConvert(RedisController.RedisMGet(args));
     }
 
     public static void Incr(string[] args)
@@ -128,21 +115,11 @@ public static class Strings
             output = RedisController.RedisScan(int.Parse(args[0]), args[1], long.Parse(args[2]));
         else
             output = RedisController.RedisScan(int.Parse(args[0]));
-
-        string final = "[";
-        for (int i = 0; i < output.Length; i++)
-        {
-            string comma = "";
-            if(i != output.Length - 1) { comma = ","; }
-            final += "\"" + output[i] + "\"" + comma;
-        }
-        final += "]";
-        return final;
+        return SQFUtil.SQFConvert(output);
     }
 
-    public static string[] Keys(string[] args)
+    public static string Keys(string[] args)
     {
-        //This probably doesn't work, remind myself to update this later, string[] -> string (SQF Compatiable)
-        return RedisController.RedisKeys(args[0]);
+        return SQFUtil.SQFConvert(RedisController.RedisKeys(args[0])); ;
     }
 }
