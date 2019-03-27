@@ -7,12 +7,12 @@ using System.Text;
 
 public class ExtRedis
 {
-    public const string Version = "V0.0.01";
+    public const string Version = "V0.7.1";
 
     [DllExport("RVExtensionVersion", CallingConvention = CallingConvention.Winapi)]
     public static void RvExtensionVersion(StringBuilder output, int outputSize)
     {
-        output.Append("ExtRedis V0.01");
+        output.Append(Version);
     }
 
     [DllExport("RVExtension", CallingConvention = CallingConvention.Winapi)]
@@ -22,29 +22,21 @@ public class ExtRedis
         switch (function)
         {
             case "Connect":
-                if (RedisController.RedisConnect())
+                bool Connection = RedisController.RedisConnect();
+                if (Connection)
                 {
                     output.Append("Connected");
                     return 0;
                 }
                 else
                 {
-                    output.Append("ERROR: Couldn't connect to the database");
+                    output.Append(RedisController.ErrorMessage);
                     return 1;
                 }
             case "Scan":
-                int i = 0;
-                output.Append("[");
-                var scan = RedisController.RedisScan().ToList();
-                foreach (var item in scan)
-                { 
-                    string comma = "";
-                    if (i != scan.Count - 1) { comma = ","; }
-                    output.Append("\"" + item + "\"" + comma);
-                    i++;
-                }
-                output.Append("]");
-                break;
+                if (RedisController.Connected)
+                    output.Append(SQFUtil.SQFConvert(RedisController.RedisScan()));
+                return 0;
             case "Version":
                 output.Append(Version);
                 break;
@@ -64,13 +56,13 @@ public class ExtRedis
                 if (argCount == 2)
                 {
                     bool connected = RedisController.RedisConnect(args[0].Trim('"'), int.Parse(args[1]));
-                    if(!connected) { output.Append("ERROR: Couldn't connect to the database"); return 1; }
+                    if(!connected) { output.Append(RedisController.ErrorMessage); return 1; }
                     output.Append("Connected");
                     return 0;
                 } else if (argCount == 3)
                 {
-                    bool connected = RedisController.RedisConnect(args[0], int.Parse(args[1]), args[2]);
-                    if (!connected) { output.Append("ERROR: Couldn't connect to the database"); return 1; }
+                    bool connected = RedisController.RedisConnect(args[0].Trim('"'), int.Parse(args[1]), args[2].Trim('"'));
+                    if (!connected) { output.Append(RedisController.ErrorMessage); return 1; }
                     output.Append("Connected");
                     return 0;
                 }
@@ -78,7 +70,7 @@ public class ExtRedis
             else
             {
                 output.Append("No Connection to the database");
-                return 0;
+                return 1;
             }
         }
         args = args.Select(x => x.Trim('"')).ToArray();

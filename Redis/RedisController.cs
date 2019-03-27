@@ -3,12 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 public static class RedisController
 {
     public static bool Connected = false;
     public static RedisClient Redis { get; set; }
+    public static string ErrorMessage { get; private set; }
 
     #region Connection
     public static bool RedisConnect(string ip, int port, string password)
@@ -17,11 +19,12 @@ public static class RedisController
         {
             Redis = new RedisClient(ip, port);
             Redis.Auth(password);
-            Connected = true;
-            return true;
+            Connected = Redis.Connect(100);
+            return Connected;
         }
         catch (Exception ex)
         {
+            ErrorMessage = ex.Message;
             return false;
         }
     }
@@ -31,11 +34,12 @@ public static class RedisController
         try
         {
             Redis = new RedisClient(ip, port);
-            Connected = true;
-            return true;
+            Connected = Redis.Connect(100);       
+            return Connected;
         }
         catch (Exception ex)
         {
+            ErrorMessage = ex.Message;
             return false;
         }
     }
@@ -45,10 +49,11 @@ public static class RedisController
         try
         {
             Redis = new RedisClient("localhost");
-            Connected = true;
-            return true;
+            Connected = Redis.Connect(100);
+            return Connected;
         } catch(Exception ex)
         {
+            ErrorMessage = ex.Message;
             return false;
         }
     }
