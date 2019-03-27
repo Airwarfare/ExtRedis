@@ -49,13 +49,13 @@ public static class Strings
     public static void MSet(string[] args)
     {
         //Disabled, need to right helper function to break the string up into an keypair
-        //RedisController.RedisMSet(args);
+        RedisController.RedisMSet(SQFUtil.ParamParse(args[0]).ToArray());
     }
 
     public static void MSetNx(string[] args)
     {
         //Disabled, need to right helper function to break the string up into an keypair
-        //RedisController.RedisMSetNx(args);
+        RedisController.RedisMSetNx(SQFUtil.ParamParse(args[0]).ToArray());
     }
 
     public static void GetRange(string[] args)

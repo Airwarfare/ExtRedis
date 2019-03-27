@@ -81,6 +81,11 @@ public class ExtRedis
             }
         }
         args = args.Select(x => x.Trim('"')).ToArray();
+        //I believe doing a switch statement here is a faster way but its kind of gross
+        //The switch should compile down to a jump table, but I want a better way to write this, even if it is slower
+        //May do some reflection stuff to cast the name of the function and call it rather than this long switch table
+        //The table will stay for now as I get the functionality down but will be getting removed later
+        //"premature optimization is the root of all evil"
         switch (function)
         {
             #region Strings
@@ -137,6 +142,51 @@ public class ExtRedis
                 break;
             case "Ttl":
                 Strings.Ttl(args);
+                break;
+            #endregion
+
+            #region Lists
+            case "RPush":
+                Lists.RPush(args);
+                break;
+            case "RPushX":
+                Lists.RPushX(args);
+                break;
+            case "LPush":
+                Lists.RPush(args);
+                break;
+            case "LRange":
+                Lists.LRange(args);
+                break;
+            case "LIndex":
+                Lists.LIndex(args);
+                break;
+            case "LInsert":
+                Lists.LInsert(args);
+                break;
+            case "LLen":
+                Lists.LLen(args);
+                break;
+            case "LPop":
+                Lists.LPop(args);
+                break;
+            case "LSet":
+                Lists.LSet(args);
+                break;
+            case "LTrim":
+                Lists.LTrim(args);
+                break;
+            case "RPop":
+                Lists.RPop(args);
+                break;
+            case "RPopLPush":
+                Lists.RPopLPush(args);
+                break;
+            case "BLPop":
+                Lists.BLPop(args);
+                break;
+            case "BRPop":
+                Lists.BRPop(args);
                 break;
             #endregion
             case "HMSet":

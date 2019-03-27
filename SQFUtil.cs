@@ -14,9 +14,9 @@ public static class SQFUtil
         List<string> StringParseList = new List<string>();
         for (int i = 0; i < input.Length; i++)
         {
-            if (input[i] == ',' && opened == 0)
+            if (input[i] == ',' && opened == 1)
             {
-                StringParseList.Add(input.Substring(lastIndex, i));
+                StringParseList.Add(input.Substring(lastIndex + 1, (i - lastIndex) - 1));
                 lastIndex = i;
                 continue;
             }
@@ -30,10 +30,9 @@ public static class SQFUtil
             }
             if (i == input.Length - 1)
             {
-                StringParseList.Add(input.Substring(lastIndex + 1, i - lastIndex));
+                StringParseList.Add(input.Substring(lastIndex + 1, (i - lastIndex) - 1));
             }
         }
         return StringParseList;
     }
 }
-
