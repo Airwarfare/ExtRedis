@@ -492,6 +492,10 @@ public static class RedisController
 
     #endregion
 
-
+    //Getter
+    public static string[] RedisKeys(string pattern)
+    {
+        return Redis.Keys(pattern);
+    }
     //!IMPORTANT, PUB/SUB, NEED TO INJECT SQF FOR THIS FEATURE
 }

@@ -139,4 +139,10 @@ public static class Strings
         final += "]";
         return final;
     }
+
+    public static string[] Keys(string[] args)
+    {
+        //This probably doesn't work, remind myself to update this later, string[] -> string (SQF Compatiable)
+        return RedisController.RedisKeys(args[0]);
+    }
 }
