@@ -118,4 +118,25 @@ public static class Strings
     {
         RedisController.RedisTtl(args[0]);
     }
+
+    public static string Scan(string[] args)
+    {
+        string[] output = null;
+        if  (args.Length == 2)
+            output = RedisController.RedisScan(int.Parse(args[0]), args[1]);
+        else if(args.Length == 3)
+            output = RedisController.RedisScan(int.Parse(args[0]), args[1], long.Parse(args[2]));
+        else
+            output = RedisController.RedisScan(int.Parse(args[0]));
+
+        string final = "[";
+        for (int i = 0; i < output.Length; i++)
+        {
+            string comma = "";
+            if(i != output.Length - 1) { comma = ","; }
+            final += "\"" + output[i] + "\"" + comma;
+        }
+        final += "]";
+        return final;
+    }
 }
