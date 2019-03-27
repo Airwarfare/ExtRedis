@@ -6,5 +6,79 @@ using System.Threading.Tasks;
 
 public static class SortedSets
 {
+    public static void ZAdd(string[] args)
+    {
+        RedisController.RedisZAdd(args[0], SQFUtil.ParamParse(args[1]).ToArray());
+    }
 
+    public static long ZCard(string[] args)
+    {
+        return RedisController.RedisZCard(args[0]);
+    }
+
+    public static long ZCount(string[] args)
+    {
+        return RedisController.RedisZCount(args[0], args[1], args[2]);
+    }
+
+    public static void ZIncrBy(string[] args)
+    {
+        RedisController.RedisZIncrBy(args[0], int.Parse(args[1]), args[2]);
+    }
+
+    public static string[] ZRange(string[] args)
+    {
+        //This probably doesn't work, remind myself to update this later, string[] -> string (SQF Compatiable)
+        if (args.Length == 4)
+            return RedisController.RedisZRange(args[0], long.Parse(args[1]), long.Parse(args[2]), bool.Parse(args[3]));
+        else
+            return RedisController.RedisZRange(args[0], long.Parse(args[1]), long.Parse(args[2]));
+    }
+
+    public static long? ZRank(string[] args)
+    {
+        return RedisController.RedisZRank(args[0], args[1]);
+    }
+
+    public static void ZRem(string[] args)
+    {
+        RedisController.RedisZRem(args[0], SQFUtil.ParamParse(args[1]));
+    }
+
+    public static void ZRemRangeByRank(string[] args)
+    {
+        RedisController.RedisZRemRangeByRank(args[0], long.Parse(args[1]), long.Parse(args[2]));
+    }
+
+    public static void ZRemRangeByScore(string[] args)
+    {
+        if (args.Length == 4)
+            RedisController.RedisZRemRangeByScore(args[0], double.Parse(args[1]), double.Parse(args[2]), bool.Parse(args[3]));
+        else if (args.Length == 5)
+            RedisController.RedisZRemRangeByScore(args[0], double.Parse(args[1]), double.Parse(args[2]), bool.Parse(args[3]), bool.Parse(args[4]));
+        else
+            RedisController.RedisZRemRangeByScore(args[0], double.Parse(args[1]), double.Parse(args[2]));
+    }
+    
+    public static double? ZScore(string[] args)
+    {
+        return RedisController.RedisZScore(args[0], args[1]);
+    }
+
+    public static string[] ZRangeByScore(string[] args)
+    {
+        //This probably doesn't work, remind myself to update this later, string[] -> string (SQF Compatiable)
+        if (args.Length == 8)
+            return RedisController.RedisZRangeByScore(args[0], double.Parse(args[1]), double.Parse(args[2]), bool.Parse(args[3]), bool.Parse(args[4]), bool.Parse(args[5]), long.Parse(args[6]), long.Parse(args[7]));
+        else if (args.Length == 7)
+            return RedisController.RedisZRangeByScore(args[0], double.Parse(args[1]), double.Parse(args[2]), bool.Parse(args[3]), bool.Parse(args[4]), bool.Parse(args[5]), long.Parse(args[6]));
+        else if (args.Length == 6)
+            return RedisController.RedisZRangeByScore(args[0], double.Parse(args[1]), double.Parse(args[2]), bool.Parse(args[3]), bool.Parse(args[4]), bool.Parse(args[5]));
+        else if (args.Length == 5)
+            return RedisController.RedisZRangeByScore(args[0], double.Parse(args[1]), double.Parse(args[2]), bool.Parse(args[3]), bool.Parse(args[4]));
+        else if (args.Length == 4)
+            return RedisController.RedisZRangeByScore(args[0], double.Parse(args[1]), double.Parse(args[2]), bool.Parse(args[3]));
+        else
+            return RedisController.RedisZRangeByScore(args[0], double.Parse(args[1]), double.Parse(args[2]));
+    }
 }
