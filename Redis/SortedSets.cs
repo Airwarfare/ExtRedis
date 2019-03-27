@@ -83,4 +83,16 @@ public static class SortedSets
             output = RedisController.RedisZRangeByScore(args[0], double.Parse(args[1]), double.Parse(args[2]));
         return SQFUtil.SQFConvert(output);
     }
+
+    public static string ZScan(string[] args)
+    {
+        Tuple<string, double>[] tuples = null;
+        if (args.Length == 4)
+            tuples = RedisController.RedisZScan(args[0], int.Parse(args[1]), args[2], long.Parse(args[4]));
+        else if (args.Length == 3)
+            tuples = RedisController.RedisZScan(args[0], int.Parse(args[1]), args[2]);
+        else
+            tuples = RedisController.RedisZScan(args[0], int.Parse(args[1]));
+        return SQFUtil.SQFConvert(tuples.ToDictionary(x => x.Item1, x => x.Item2.ToString()), false);
+    }
 }

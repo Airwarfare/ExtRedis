@@ -8,7 +8,7 @@ public static class Sets
 {
     public static void SAdd(string[] args)
     {
-        RedisController.RedisSAdd(args[0], SQFUtil.ParamParse(args[1]));
+        RedisController.RedisSAdd(args[0], SQFUtil.ParamParse(args[1]).ToArray());
     }
 
     public static long SCard(string[] args)
@@ -28,7 +28,7 @@ public static class Sets
 
     public static string SMembers(string[] args)
     {
-        return SQFUtil.SQFConvert(RedisController.RedisSMembers(args[0]));
+        return SQFUtil.SQFConvert(RedisController.RedisSMembers(args[0]), false);
     }
 
     public static void SUnion(string[] args)
@@ -49,5 +49,18 @@ public static class Sets
     public static string SPop(string[] args)
     {
         return RedisController.RedisSPop(args[0]);
+    }
+
+    public static string SScan(string[] args)
+    {
+        string[] output = null;
+        if (args.Length == 4)
+            output = RedisController.RedisSScan(args[0], int.Parse(args[1]), args[2], long.Parse(args[3]));
+        else if (args.Length == 3)
+            output = RedisController.RedisSScan(args[0], int.Parse(args[1]), args[2]);
+        else
+            output = RedisController.RedisSScan(args[0], int.Parse(args[1]));
+
+        return SQFUtil.SQFConvert(output, false);
     }
 }

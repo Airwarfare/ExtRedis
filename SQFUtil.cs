@@ -46,30 +46,38 @@ public static class SQFUtil
         return output;
     }
 
-    public static string SQFConvert(string[] args)
+    public static string SQFConvert(string[] args, bool qoutes = true)
     {
         if (args.Length == 0) { return ""; }
         string output = "[";
+
+        string qoute = "";
+        if (qoutes)
+            qoute = "\"";
         for (int i = 0; i < args.Length; i++)
         {
             string comma = "";
             if (i != args.Length - 1) { comma = ","; }
-            output += "\"" + args[i] + "\"" + comma;
+            output += qoute + args[i] + qoute + comma;
         }
         output += "]";
         return output;
     }
 
-    public static string SQFConvert(Dictionary<string, string> args)
+    public static string SQFConvert(Dictionary<string, string> args, bool qoutes = true)
     {
         if (args.Count == 0) { return ""; }
         string output = "[";
         int i = 0;
+        //I hate this ↓, want to find a way to detect if the item needs the qoutes or not dynamically
+        string qoute = "";
+        if (qoutes)
+            qoute = "\"";
         foreach (var item in args)
         {
             string comma = "";
             if (i != args.Count - 1) { comma = ","; }
-            output += "[\"" + item.Key + "\", " + item.Value + "]" + comma;
+            output += "[" + qoute + item.Key + qoute + ", " + item.Value + "]" + comma;
             i++;
         }
         output += "]";
