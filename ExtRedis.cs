@@ -85,7 +85,7 @@ public class ExtRedis
         
 
         //This is slower than the previous switch statement I used, but its much more maintainable, will be keeping this for now
-        //In the feature if I find something that is just as maintainable but faster I will rewrite this section to implement that
+        //In the future if I find something that is just as maintainable but faster I will rewrite this section to implement that
         Type[] types = new Type[]
         {
             typeof(Strings),

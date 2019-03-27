@@ -23,6 +23,7 @@ public static class Lists
 
     public static string[] LRange(string[] args)
     {
+        //This probably doesn't work, remind myself to update this later, string[] -> string (SQF Compatiable)
         return RedisController.RedisLRange(args[0], long.Parse(args[1]), long.Parse(args[2]));
     }
 
