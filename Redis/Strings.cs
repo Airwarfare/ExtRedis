@@ -120,6 +120,6 @@ public static class Strings
 
     public static string Keys(string[] args)
     {
-        return SQFUtil.SQFConvert(RedisController.RedisKeys(args[0])); ;
+        return SQFUtil.SQFConvert(RedisController.RedisKeys(args[0]));
     }
 }
