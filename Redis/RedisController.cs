@@ -468,6 +468,16 @@ public static class RedisController
     {
         Redis.HDel(key, fields);
     }
+
+    public static void RedisFlushAll()
+    {
+        Redis.FlushAll();
+    }
+
+    public static string RedisFlushDB()
+    {
+        return Redis.FlushDb();
+    }
     #endregion
 
     public static string RedisSelect(int index)

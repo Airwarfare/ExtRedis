@@ -85,7 +85,8 @@ public class ExtRedis
             typeof(Sets),
             typeof(SortedSets),
             typeof(Hashes),
-            typeof(Hyperlog)
+            typeof(Hyperlog),
+            typeof(Management)
         };
 
         foreach (var item in types)
